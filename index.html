@@ -181,20 +181,21 @@
             <div class="panel-body">
                 <p><img src="images/enemies.png" width="32px"> Fill in the information about your defences:</p>
                 <form class="form-inline" role="form">
-                <table style="width: 100%; text-align: center">
+                <table style="width: 100%; text-align: center;">
                     <tr>
                         <td></td>
-                        <td><defences-entry name="NORTH" dirid="N" defences="defences"></defences-entry></td>
+                        <td rowspan="2"><defences-entry name="NORTH" dirid="N" defences="defences"></defences-entry></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><defences-entry name="WEST" dirid="W" defences="defences"></defences-entry></td>
-                        <td></td>
-                        <td><defences-entry name="EAST" dirid="E" defences="defences"></defences-entry></td>
+                        <td rowspan="2"><defences-entry name="WEST" dirid="W" defences="defences"></defences-entry></td>
+                        <td rowspan="2"><defences-entry name="EAST" dirid="E" defences="defences"></defences-entry></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><defences-entry name="SOUTH" dirid="S" defences="defences"></defences-entry></td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td><defences-entry name="SOUTH" dirid="S" defences="defences"></defences-entry></td>
                         <td></td>
                     </tr>
                 </table>
@@ -219,20 +220,22 @@
             <div class="panel-body">
                 <p><img src="images/enemies.png" width="32px"> Position the troops on Deployment Zones:</p>
 
-                <table style="width: 100%; text-align: center">
+
+                <table style="width: 100%; text-align: center;">
                     <tr>
                         <td></td>
-                        <td><strong>NORTH</strong><br/><forces forces="forcesNearTown['N']" type="invaderType"></forces></td>
+                        <td rowspan="2"><strong>NORTH</strong><br/><forces forces="forcesNearTown['N']" type="invaderType"></forces><br/><br/></td>
                         <td></td>
                     </tr>
                     <tr>
-                        <td><strong>WEST</strong><br/> <forces forces="forcesNearTown['W']" type="invaderType"></forces></td>
-                        <td></td>
-                        <td><strong>EAST</strong><br/> <forces forces="forcesNearTown['E']" type="invaderType"></forces></td>
+                        <td rowspan="2"><strong>WEST</strong><br/> <forces forces="forcesNearTown['W']" type="invaderType"></forces></td>
+                        <td rowspan="2"><strong>EAST</strong><br/> <forces forces="forcesNearTown['E']" type="invaderType"></forces></td>
+                    </tr>
+                    <tr>
+                        <td rowspan="2"><strong>SOUTH</strong><br/><forces forces="forcesNearTown['S']" type="invaderType"></forces></td>
                     </tr>
                     <tr>
                         <td></td>
-                        <td><strong>SOUTH</strong><br/><forces forces="forcesNearTown['S']" type="invaderType"></forces></td>
                         <td></td>
                     </tr>
                 </table>
@@ -276,11 +279,6 @@
         <button class="btn btn-primary" ng-click="phase = 'looting'">Loot!</button>
     </div>
 
-
-
-
-
-
     <!-- SIEGE LOOT -->
     <div ng-show="phase == 'looting'">
         <h2>III. SIEGE - LOOT</h2>
@@ -295,6 +293,10 @@
         <button class="btn btn-default" ng-click="phase = 'battle'">< back</button>
         <button class="btn btn-primary" ng-click="round = round + 1; phase = 'preparations'">Next round</button>
     </div>
+
+    <br/>
+    <br/>
+    <br/>
 </div>
 </body>
 </html>
