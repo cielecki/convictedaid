@@ -42,7 +42,7 @@ angular.module('convicted', [])
             if (arriveBehaviour.avoidsMoats || arriveBehaviour.goesForWeakestWall) {
                 $scope.phase = 'enemyGathersInformation';
             } else {
-                $scope.arriveFromDirection(randomElementInArray(arriveBehaviour.availableDistribution));
+                $scope.arriveFromDirection(randomElementInArray(arriveBehaviour.directionDistribution));
             }
         }
 
