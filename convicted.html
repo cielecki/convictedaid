@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html ng-app="convicted">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+
+    <!-- Bootstrap and angular -->
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.0-beta.18/angular.min.js"></script>
+
+    <!-- Mordred font -->
+    <link rel="stylesheet" href="font/stylesheet.css" type="text/css" charset="utf-8" />
+
+    <!-- Primary stylesheet -->
+    <style type="text/css">
+        h1, h2, h3, h4, h5 {
+            font-family: 'mordredregular';
+        }
+
+        .primary-message {
+            text-align: center;
+            margin-top: 1em;
+            margin-bottom: 1em;
+        }
+    </style>
+
+    <!-- Primary scripts -->
+    <script src="invaders.js"></script>
+    <script src="convicted.js"></script>
+</head>
+<body>
+<div class="container" ng-controller="GameController">
+    <br/>
+
+    <!-- GAME SETUP -->
+    <div ng-show="phase == 'gameSetup'">
+        <center><h2>GAME SETUP</h2></center><br/>
+        <form class="form-horizontal" role="form">
+            <h3>General settings</h3>
+            <div class="form-group">
+                <label for="inputPlayers" class="col-sm-2 control-label">Players</label>
+                <div class="col-sm-10">
+                    <input type="number" id="inputPlayers" class="form-control" ng-model="playersNum" placeholder="1,2,3 etc">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputRound" class="col-sm-2 control-label">Initial round</label>
+                <div class="col-sm-10">
+                    <input type="number" id="inputRound" class="form-control" ng-model="round" placeholder="1,2,3 etc">
+                </div>
+            </div>
+            <h3>Difficulty</h3>
+            <div class="form-group">
+                <label for="inputBeastsDifficulty" class="col-sm-2 control-label">Beasts difficulty</label>
+                <div class="col-sm-10">
+                    <input type="number" id="inputBeastsDifficulty" class="form-control" ng-model="invaderTypes['Beasts'].difficulty" placeholder="1,2,3 etc">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputBarbariansDifficulty" class="col-sm-2 control-label">Barbarians difficulty</label>
+                <div class="col-sm-10">
+                    <input type="number" id="inputBarbariansDifficulty" class="form-control" ng-model="invaderTypes['Barbarians'].difficulty" placeholder="1,2,3 etc">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputWolfmenDifficulty" class="col-sm-2 control-label">Wolfmen difficulty</label>
+                <div class="col-sm-10">
+                    <input type="number" id="inputWolfmenDifficulty" class="form-control" ng-model="invaderTypes['Wolfmen'].difficulty" placeholder="1,2,3 etc">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputForestmenDifficulty" class="col-sm-2 control-label">Forestmen difficulty</label>
+                <div class="col-sm-10">
+                    <input type="number" id="inputForestmenDifficulty" class="form-control" ng-model="invaderTypes['Forestmen'].difficulty" placeholder="1,2,3 etc">
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="submit" class="btn btn-default" ng-click="phase = 'preparations'">Start</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- SETUP & ACTIONS -->
+    <div ng-show="phase == 'preparations'">
+        <h2>I. SETUP</h2>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                <span ng-show="round != 1">
+                    <img src="images/timemarker.png" width="32px"> Move the Time Marker one space forwards to the <strong>{{round}}</strong> space.<br/>
+                </span>
+
+                <img src="images/actionmarker.png" width="32px">
+                <span ng-show="playersNum == 1">Player receives <strong>12</strong> action tokens</span>
+                <span ng-show="playersNum == 2">Each player receives <strong>6</strong> action tokens</span>
+                <span ng-show="playersNum == 3">Each player receives <strong>4</strong> action tokens</span>
+                <span ng-show="playersNum == 4">Each player receives <strong>3</strong> action tokens</span><br/>
+
+                <span ng-show="round != 1">
+                    <img src="images/enemies.png" width="32px"> Remove all of the invader’s units from the board.<br/>
+                    <img src="images/morale.png" width="32px"> Remove the Invader's Morale marker from the board.<br/>
+                    <img src="images/protection.png" width="32px"> Place the used Spell and Blessing markers back on the Mage Tower and Chapel Cards.<br/>
+                    <img src="images/invadersdeck.png" width="32px"> Shuffle the Invader’s Card deck and place it on an appropriate field on the board “face” down.<br/>
+                    <img src="images/firstplayertoken.png" width="32px"> First Player token is placed in front of the next player in the clockwise direction.<br/>
+                </span>
+
+                <img src="images/fortifications.png" width="32px"> Each of the players beginning with the one with the First Player token chooses his sections of the Fortications to defend.<br/>
+                </div>
+            </div>
+        <br/>
+        <h2>II. EXECUTING ACTIONS</h2>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <img src="images/actionmarker.png" width="32px"> Each player executes his actions, available actions:
+                <ul style="margin-left: 2em">
+                    <li>Build or upgrade a <strong>fortication</strong>, <strong>building</strong>, <strong>moat</strong>, <strong>ditch</strong> or <strong>sharpened stakes</strong></li>
+                    <li>Research new technology</li>
+                    <li>Receive resources</li>
+                    <li>Train military unit</li>
+                </ul>
+                <p>You can also repair fortifications without spending an action.</p>
+            </div>
+        </div>
+
+        <center><button class="btn btn-default btn-lg" ng-click="phase = 'invaderScouted'; sendScouts()">Scout the incoming invading army</button></center>
+    </div>
+
+    <!-- SIEGE SETUP PART 1 -->
+    <div ng-show="phase == 'invaderScouted'">
+        <h2>III. SIEGE - SETUP</h2>
+
+        <h1 class="primary-message">Scouts report news about an invading army of {{invaderType.name}}</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div ng-show="invaderType.forces[round-1].mad">
+                            <p><strong>Main army</strong><br/>(will attack from the main assault direction):</p>
+                            <p><forces forces="invaderType.forces[round-1].mad" type="invaderType"></forces></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div ng-show="invaderType.forces[round-1].other">
+                            <p><strong>Supporting forces</strong><br/>(will attack from other sides):</p>
+                            <p><forces forces="invaderType.forces[round-1].other" type="invaderType"></forces></p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div ng-show="invaderType.forces[round-1].gate">
+                            <p><strong>Battering rams</strong><br/>(will attack the gate):</p>
+                            <p><forces forces="invaderType.forces[round-1].gate" type="invaderType"></forces></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p><img src="images/fortifications.png" width="32px"> Defenders! Set the position of your troops on the Walls, Towers and inside the Keep.</p>
+                <p><strong>Note:</strong> No units except Ranged Units/Siege Machines stationed in the Keep can stay on its grounds.</p>
+            </div>
+        </div>
+
+        <button class="btn btn-default" ng-click="phase = 'preparations'">< back</button>
+        <button class="btn btn-primary" ng-click="defendersReadyCb()">Troops ready!</button>
+    </div>
+
+    <!-- SIEGE SETUP OPTIONAL PART -->
+    <div ng-show="phase == 'enemyGathersInformation'">
+
+        <h2>III. SIEGE - STATUS</h2>
+
+        <h1 class="primary-message">{{invaderType.name}} are scouting your positions!</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p><img src="images/enemies.png" width="32px"> Fill in the information about your defences:</p>
+                <form class="form-inline" role="form">
+                <table style="width: 100%; text-align: center">
+                    <tr>
+                        <td></td>
+                        <td><defences-entry name="NORTH" dirid="N" defences="defences"></defences-entry></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><defences-entry name="WEST" dirid="W" defences="defences"></defences-entry></td>
+                        <td></td>
+                        <td><defences-entry name="EAST" dirid="E" defences="defences"></defences-entry></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><defences-entry name="SOUTH" dirid="S" defences="defences"></defences-entry></td>
+                        <td></td>
+                    </tr>
+                </table>
+                </form>
+            </div>
+        </div>
+
+        <button class="btn btn-default" ng-click="phase = 'invaderScouted'">< back</button>
+        <button class="btn btn-primary" ng-click="enemyGatheredInformationCb()">Done</button>
+        <br/>
+        <br/>
+        <br/>
+    </div>
+
+    <!-- SIEGE SETUP PART 2 -->
+    <div ng-show="phase == 'invaderArrived'">
+        <h2>III. SIEGE - SETUP</h2>
+
+        <h1 class="primary-message">{{invaderType.name}} arrive and attack from the {{ {'S': 'South', 'N': 'North', 'E':'East', 'W':'West'}[MAD] }}!</h1>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p><img src="images/enemies.png" width="32px"> Position the troops on Deployment Zones:</p>
+
+                <table style="width: 100%; text-align: center">
+                    <tr>
+                        <td></td>
+                        <td><strong>NORTH</strong><br/><forces forces="forcesNearTown['N']" type="invaderType"></forces></td>
+                        <td></td>
+                    </tr>
+                    <tr>
+                        <td><strong>WEST</strong><br/> <forces forces="forcesNearTown['W']" type="invaderType"></forces></td>
+                        <td></td>
+                        <td><strong>EAST</strong><br/> <forces forces="forcesNearTown['E']" type="invaderType"></forces></td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td><strong>SOUTH</strong><br/><forces forces="forcesNearTown['S']" type="invaderType"></forces></td>
+                        <td></td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        </br>
+
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <img src="images/protection.png" width="32px"> Defenders, use your Blessings and Spells: Aura, Barrier, Magic Fire.
+            </div>
+        </div>
+
+        <button class="btn btn-default" ng-click="phase = 'invaderScouted'">< back</button>
+        <button class="btn btn-primary" ng-click="phase = 'battle'">Proceed to battle</button>
+    </div>
+
+    <!-- SIEGE BATTLE -->
+    <div ng-show="phase == 'battle'">
+        <h2>III. SIEGE - BATTLE</h2>
+
+        <h1 class="primary-message">{{invaderType.name}} are invading!</h1>
+
+        <p>Step 1. Defender’s Ranged Units attack </p>
+        <p>Step 2. Invader’s Ranged Units attack</p>
+        <p>Step 3. Defender’s Siege Machines attack</p>
+        <p>Step 4. Invader’s Siege Machines attack</p>
+        <p>Step 5. Regrouping the enemy to the Foreground Zone</p>
+        <p>Step 6. Defender’s Ranged Units second attack</p>
+        <p>Step 7. Regrouping defenders</p>
+        <p>Step 8. Invader’s Ranged Units second attack </p>
+        <p>Step 9. Forming Combat Groups</p>
+        <p>Step 10. Using Cauldrons/Boulders</p>
+        <p>Step 11. Assigning defender’s units to Combat Groups</p>
+        <p>Step 12. Close combat outcome</p>
+        <p>Step 13. Destroying the Town/regrouping enemy units</p>
+        <p>Step 14. Loyalty test. <label>Current morale:</label> <input type="number" ng-model="currentMorale" placeholder="1,2,3 etc"> <button ng-click="performLoyalityTest()">Loyality test</button> <span><strong>{{loyalityTestResult}}</strong></span></p>
+        <p><em>Note:</em> Loyality test will automatically decrease morale after the test so you don't have to change it manually</p>
+        <button class="btn btn-default" ng-click="phase = 'invaderArrived'">< back</button>
+        <button class="btn btn-primary" ng-click="phase = 'looting'">Loot!</button>
+    </div>
+
+
+
+
+
+
+    <!-- SIEGE LOOT -->
+    <div ng-show="phase == 'looting'">
+        <h2>III. SIEGE - LOOT</h2>
+
+        <h1 class="primary-message">{{invaderType.name}} are defeated!</h1>
+
+        <p>
+            <resources resources="invaderType.loot[round+1]"></resources>
+            <span ng-show="playerNumInfo[playersNum-1].extra_wood_per_player > 0">(+ <resource type="'wood'" quantity="playerNumInfo[playersNum-1].extra_wood_per_player"></resource> for each player)</span>
+        </p>
+
+        <button class="btn btn-default" ng-click="phase = 'battle'">< back</button>
+        <button class="btn btn-primary" ng-click="round = round + 1; phase = 'preparations'">Next round</button>
+    </div>
+</div>
+</body>
+</html>
