@@ -35,8 +35,8 @@
     <script src="js/invader_common.js"></script>
     <script src="js/invader_barbarians.js"></script>
     <script src="js/invader_beasts.js"></script>
-    <script src="js/invader_forestmen.js"></script>
     <script src="js/invader_wolfmen.js"></script>
+    <script src="js/invader_forestmen.js"></script>
     <script src="js/convicted.js"></script>
 </head>
 <body>
@@ -255,7 +255,13 @@
 
         <div class="panel panel-default">
             <div class="panel-body">
-                <img src="images/protection.png" width="32px"> Defenders, use your Blessings and Spells: Aura, Barrier, Magic Fire.
+                <span ng-show="invaderType.cantUseBlessingsAgainstThisInvader">
+                    <img src="images/protection.png" width="32px"> <strong>Due to invader ability, defenders can not use blessings during this siege.</strong>
+                </span>
+                <span ng-show="!invaderType.cantUseBlessingsAgainstThisInvader">
+                    <img src="images/protection.png" width="32px"> Defenders, use your Blessings and Spells: Aura, Barrier, Magic Fire.
+                </span>
+
             </div>
         </div>
 
@@ -294,10 +300,15 @@
 
         <h1 class="primary-message">{{invaderType.name}} are defeated!</h1>
 
-        <p>
+        <p ng-show="invaderType.noLootWhenDifficultyAt3 && invaderType.difficulty >= 3">
+            No loot due to {{invaderType.name}} ability.
+        </p>
+
+        <p ng-show="!invaderType.noLootWhenDifficultyAt3 || invaderType.difficulty < 3">
             <resources resources="invaderType.loot[round+1]"></resources>
             <span ng-show="playerNumInfo[playersNum-1].extra_wood_per_player > 0">(+ <resource type="'wood'" quantity="playerNumInfo[playersNum-1].extra_wood_per_player"></resource> for each player)</span>
         </p>
+
 
         <button class="btn btn-default" ng-click="phase = 'battle'">< back</button>
         <button class="btn btn-primary" ng-click="round = round + 1; phase = 'preparations'">Next round</button>

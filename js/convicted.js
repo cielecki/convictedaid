@@ -7,7 +7,7 @@ angular.module('convicted', ['ui.bootstrap'])
 
         //default global setup
         $scope.invaderTypes = INVADER_TYPES;
-        $scope.round = 1;
+        $scope.round = 15;
         $scope.playersNum = 2;
         $scope.phase = 'gameSetup';
         $scope.defences = {
@@ -148,8 +148,26 @@ angular.module('convicted', ['ui.bootstrap'])
                 forces: '=',
                 invaderType: '=type'
             },
-            template:
-                '<span ng-repeat="(unitId, unitCount) in forces track by $index" ng-show="unitCount > 0"> {{unitCount}} x <img src="{{invaderType.unitTypes[unitId].icon}}" width="{{invaderType.unitTypes[unitId].size}}px"/> {{invaderType.unitTypes[unitId].name}}<br/></span>'
+            controller: function ($scope, $modal, $log) {
+
+                $scope.showUnitInfo = function (unitId) {
+                    var modalInstance = $modal.open({
+                        templateUrl: 'partials/unit_info.html',
+                        scope: $scope,
+                        controller: function ($scope, $modalInstance, $sce) {
+                            $scope.unitType = $scope.invaderType.unitTypes[unitId];
+                            $scope.ok = function () { $modalInstance.dismiss('ok'); }
+                            $scope.showTrait = function (trait) {
+                               return typeof trait.minDifficulty === 'undefined' || trait.minDifficulty <= $scope.invaderType.difficulty;
+                            }
+                            $scope.toTrusted = function(html_code) {
+                                return $sce.trustAsHtml(html_code);
+                            }
+                        }
+                    });
+                };
+            },
+            templateUrl: 'partials/unit_vector_info.html'
         };
     })
 

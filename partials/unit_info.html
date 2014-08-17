@@ -1,0 +1,21 @@
+<div class="modal-header">
+    <h3 class="modal-title"><img src="{{unitType.icon}}" width="{{unitType.size*2}}px"/> {{unitType.name}}</h3>
+</div>
+<div class="modal-body">
+    <p>
+        <span ng-show="unitType.ST !== 0"><strong>{{unitType.ST}}</strong> <img src="images/ST.png" width="16px"/></span>
+        <span ng-show="unitType.SU !== 0"><strong>{{unitType.SU}}</strong> <img src="images/SU.png" width="16px"/></span>
+        <span ng-show="unitType.EN !== 0"><strong>{{unitType.EN}}</strong> <img src="images/EN.png" width="16px"/></span>
+        <span ng-show="unitType.RST !== 0"><strong>{{unitType.RST}}</strong> <img src="images/RST.png" width="16px"/></span>
+    </p>
+
+    <p ng-repeat="trait in unitType.traits">
+        <span ng-show="showTrait(trait)">
+            <strong>{{trait.name}}</strong><br/><span ng-bind-html="toTrusted(trait.description)"></div>
+        </span>
+    </p>
+</div>
+
+<div class="modal-footer">
+    <center><button class="btn btn-default" ng-click="ok()">OK</button></center>
+</div>

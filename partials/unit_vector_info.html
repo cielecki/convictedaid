@@ -1,0 +1,9 @@
+<span ng-repeat="(unitId, unitCount) in forces track by $index" ng-show="unitCount > 0">
+    <a ng-click="showUnitInfo(unitId)" href="">
+        {{unitCount}}
+        x
+        <img src="{{invaderType.unitTypes[unitId].icon}}" width="{{invaderType.unitTypes[unitId].size}}px"/>
+        {{invaderType.unitTypes[unitId].name}}
+    </a>
+    <br/>
+</span>
