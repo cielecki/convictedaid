@@ -143,7 +143,7 @@
                 <img src="images/fortifications.png" width="32px"> Activities that do not require an action:
                 <ul style="margin-left: 2em">
                     <li>Repair a fortification.</li>
-                    <li>Each player may give one resource type per round with another player of your choice.</li>
+                    <li>Each player may give one resource type per round with another player of his choice.</li>
                 </ul>
             </div>
         </div>
@@ -290,25 +290,27 @@
 
         <div class="row">
             <div class="col-md-6">
+                <p><strong>Forces near the town:</strong></p>
+                <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
+            </div>
+            <div class="col-md-6">
                 Step 1. Defender’s Ranged Units attack<br/>
                 Step 2. Invader’s Ranged Units attack<br/><br/>
                 Step 3. Defender’s Siege Machines attack<br/>
-                Step 4. Invader’s Siege Machines attack<br/>
+                Step 4. Invader’s Siege Machines attack<br/><br/>
                 Step 5. Regrouping the enemy to the Foreground Zone<br/>
                 Step 6. Defender’s Ranged Units second attack<br/>
                 Step 7. Regrouping defenders<br/>
-                Step 8. Invader’s Ranged Units second attack<br/>
+                Step 8. Invader’s Ranged Units second attack<br/><br/>
                 Step 9. Forming Combat Groups<br/>
                 Step 10. Using Cauldrons/Boulders<br/>
                 Step 11. Assigning defender’s units to Combat Groups<br/>
                 Step 12. Close combat outcome<br/>
                 Step 13. Destroying the Town/regrouping enemy units<br/><br/>
-                Step 14. Loyalty test.<br/><label>Current morale:</label> <input type="number" ng-model="currentMorale" placeholder="1,2,3 etc"> <button class="btn btn-default" ng-click="performLoyalityTest()">Loyality test</button> <span><strong>{{loyalityTestResult}}</strong></span>
-                <p><em>Note:</em> Loyality test will automatically decrease morale after the test so you don't have to change it manually</p>
-            </div>
-            <div class="col-md-6">
-                <p><strong>Forces near the town:</strong></p>
-                <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
+                Step 14. <button class="btn btn-default" ng-click="performLoyalityTest()">Loyalty test</button> <span><strong>{{loyalityTestResult}}</strong></span>
+                <br/><br/>
+                <p><em>Note:</em> Only perform the loyalty test if the defenders killed at least 50% of the invaders.</p>
+                <p><em>Note:</em> Each loyalty test reduces morale for future loyalty tests.</p>
             </div>
         </div>
 

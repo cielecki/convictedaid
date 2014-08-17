@@ -129,10 +129,14 @@ angular.module('convicted', ['ui.bootstrap'])
             $scope.phase = 'invaderArrived';
         }
 
+        function fleePercent() {
+            return Math.floor(1/6 * (6 - $scope.currentMorale) * 100);
+        }
+
         $scope.$watch('invaderType', function(invader) {
             if (invader) {
                 $scope.currentMorale = invader.morale;
-                $scope.loyalityTestResult = ''
+                $scope.loyalityTestResult = 'Flee chance ' + fleePercent() + '%';
             }
         });
 
@@ -143,12 +147,12 @@ angular.module('convicted', ['ui.bootstrap'])
                 var result = rollDie();
 
                 if (result > $scope.currentMorale) {
-                    $scope.loyalityTestResult = 'Invaders run away!';
+                    $scope.loyalityTestResult = 'Invaders ran away!';
                 } else {
-                    $scope.loyalityTestResult = 'Invaders stay and fight';
+                    $scope.currentMorale--;
+                    $scope.loyalityTestResult = 'Invaders stay and fight, flee chance ' + fleePercent() + '%';
                 }
 
-                $scope.currentMorale--;
             }, 250);
 
         }
