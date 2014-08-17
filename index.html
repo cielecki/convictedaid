@@ -96,28 +96,39 @@
     <!-- SETUP & ACTIONS -->
     <div ng-show="phase == 'preparations'">
         <h2>I. SETUP</h2>
-            <div class="panel panel-default">
-                <div class="panel-body">
-                <span ng-show="round != 1">
-                    <img src="images/timemarker.png" width="32px"> Move the Time Marker one space forwards to the <strong>{{round}}</strong> space.<br/>
-                </span>
+        <div class="panel panel-default">
+            <div class="panel-body">
 
+            <p>
+                <img src="images/timemarker.png" width="32px">
+                <span ng-show="round === 1">Place the Time Marker on </span>
+                <span ng-show="round != 1">Move the Time Marker one space forwards to</span>
+                the <strong>{{round}}</strong> space.
+            </p>
+
+            <!-- TODO: Remaining parts of the setup -->
+
+            <p ng-show="round === 1"><img src="images/fortifications.png" width="32px"> Place the Barracks level 1 and Keep level 1 buildings next to the board.</p>
+            <p ng-show="round === 1"><img src="images/fortifications.png" width="32px"> Each player chooses his hero.</p>
+            <p ng-show="round === 1"><img src="images/fortifications.png" width="32px"> Each player receives <strong>{{ {1: 8, 2: 4, 3:3, 4:2}[playersNum] }}</strong> wood and <strong>{{ {1: 8, 2: 4, 3:3, 4:2}[playersNum] }}</strong> Spearmen.</p>
+
+            <p>
                 <img src="images/actionmarker.png" width="32px">
                 <span ng-show="playersNum === 1">Player receives <strong>{{actionsPerPlayer}}</strong> action tokens</span>
-                <span ng-show="playersNum !== 1">Each player receives <strong>{{actionsPerPlayer}}</strong> action tokens <span ng-show="additionalFirstPlayerActions > 0">, the first player receives additional <strong>{{additionalFirstPlayerActions}}</strong> actions</span></span><br/>
+                <span ng-show="playersNum !== 1">Each player receives <strong>{{actionsPerPlayer}}</strong> action tokens <span ng-show="additionalFirstPlayerActions > 0">, the first player receives additional <strong>{{additionalFirstPlayerActions}}</strong> actions</span></span>
+            </p>
 
-                <span ng-show="round != 1">
-                    <img src="images/enemies.png" width="32px"> Remove all of the invader’s units from the board.<br/>
-                    <img src="images/morale.png" width="32px"> Remove the Invader's Morale marker from the board.<br/>
-                    <img src="images/protection.png" width="32px"> Place the used Spell and Blessing markers back on the Mage Tower and Chapel Cards.<br/>
-                    <img src="images/invadersdeck.png" width="32px"> Shuffle the Invader’s Card deck and place it on an appropriate field on the board “face” down.<br/>
-                    <img src="images/firstplayertoken.png" width="32px"> First Player token is placed in front of the next player in the clockwise direction.<br/>
-                </span>
+            <span ng-show="round != 1">
+                <p><img src="images/protection.png" width="32px"> Place the used Spell and Blessing markers back on the Mage Tower and Chapel Cards.</p>
+            </span>
 
-                <img src="images/fortifications.png" width="32px"> Each of the players beginning with the one with the First Player token chooses his sections of the Fortications to defend.<br/>
-                </div>
+            <span ng-show="playersNum !== 1">
+                <p><img src="images/firstplayertoken.png" width="32px"> First Player token is placed in front of <span ng-show="round === 1">a random player.</span><span ng-show="round !== 1">the next player in the clockwise direction.</span></p>
+                <p><img src="images/fortifications.png" width="32px"> Starting with the First Player, each player chooses {{playersNum == 2 ? '2 Walls' : '1 Wall' }} and {{playersNum === 2 ? '2 adjoining Towers' : '1 adjoining Tower' }} to defend. The First Player defends {{playersNum == 3 ? 'the 4th Wall section, the 4th Tower and' : '' }} the Keep.</p>
+            </span>
+
             </div>
-        <br/>
+        </div>
         <h2>II. EXECUTING ACTIONS</h2>
         <div class="panel panel-default">
             <div class="panel-body">
@@ -126,9 +137,14 @@
                     <li>Build or upgrade a <strong>fortication</strong>, <strong>building</strong>, <strong>moat</strong>, <strong>ditch</strong> or <strong>sharpened stakes</strong></li>
                     <li>Research new technology</li>
                     <li>Receive resources</li>
-                    <li>Train military unit</li>
+                    <li>Train a military unit</li>
+                    <li>Build a siege machine</li>
                 </ul>
-                <p>You can also repair fortifications without spending an action.</p>
+                <img src="images/fortifications.png" width="32px"> Activities that do not require an action:
+                <ul style="margin-left: 2em">
+                    <li>Repair a fortification.</li>
+                    <li>Each player may give one resource type per round with another player of your choice.</li>
+                </ul>
             </div>
         </div>
 
@@ -307,17 +323,27 @@
 
         <h1 class="primary-message">{{invaderType.name}} are defeated!</h1>
 
-        <p ng-show="invaderType.noLootWhenDifficultyAt3 && invaderType.difficulty >= 3">
-            {{invaderType.name}} did not abandon any loot.
-        </p>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p ng-show="invaderType.noLootWhenDifficultyAt3 && invaderType.difficulty >= 3">
+                    {{invaderType.name}} did not abandon any loot.
+                </p>
 
-        <span ng-show="!invaderType.noLootWhenDifficultyAt3 || invaderType.difficulty < 3">
-            <p>Defenders leave their fortifications in search for any loot that the invaders might have abandoned.</p>
-            <p ng-repeat="playerLoot in playersLoot"> {{['First', 'Second', 'Third', 'Fourth'][$index]}} player found <resources resources="playerLoot"></resources></p>
-            <p>Players take the resources they found and put them in their personal stashes near the board.</p>
-        </span>
+                <span ng-show="!invaderType.noLootWhenDifficultyAt3 || invaderType.difficulty < 3">
+                    <p>Defenders leave their fortifications in search for any loot that the invaders might have abandoned.</p>
+                    <p ng-repeat="playerLoot in playersLoot"> {{['First', 'Second', 'Third', 'Fourth'][$index]}} player found <resources resources="playerLoot"></resources></p>
+                    <p>Players take the resources they found and put them in their personal stashes near the board.</p>
+                </span>
+            </div>
+        </div>
 
-        <br/>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <p><img src="images/enemies.png" width="32px"> Any remaining invader units run away, remove them from the board.</p>
+                <p><img src="images/invadersdeck.png" width="32px"> If you are using the Invader’s Cards deck, shuffle it and place it on an appropriate field on the board “face” down.</p>
+                <p style="margin: 0"><img src="images/morale.png" width="32px"> If you are using the morale marker, remove it from the board.</p>
+            </div>
+        </div>
         <br/>
 
         <button class="btn btn-default" ng-click="phase = 'battle'">< back</button>
