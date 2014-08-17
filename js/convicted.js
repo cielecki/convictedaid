@@ -7,7 +7,7 @@ angular.module('convicted', ['ui.bootstrap'])
 
         //default global setup
         $scope.invaderTypes = INVADER_TYPES;
-        $scope.round = 15;
+        $scope.round = 1;
         $scope.playersNum = 2;
         $scope.phase = 'gameSetup';
         $scope.defences = {
