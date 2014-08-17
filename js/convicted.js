@@ -3,7 +3,7 @@
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 angular.module('convicted', ['ui.bootstrap'])
-    .controller('GameController', function($scope, $timeout) {
+    .controller('GameController', function($scope, $timeout, $log) {
 
         //default global setup
         $scope.invaderTypes = INVADER_TYPES;
@@ -18,10 +18,10 @@ angular.module('convicted', ['ui.bootstrap'])
         }
 
         $scope.playerNumInfo = [
-            {'extra_wood_per_player': '5'},
-            {'extra_wood_per_player': '2'},
-            {'extra_wood_per_player': '1'},
-            {'extra_wood_per_player': '0'}
+            {'extra_wood_per_player': 5},
+            {'extra_wood_per_player': 2},
+            {'extra_wood_per_player': 1},
+            {'extra_wood_per_player': 0}
         ]
 
         $scope.invaderType = null;
@@ -124,7 +124,7 @@ angular.module('convicted', ['ui.bootstrap'])
                 mergeForces($scope.forcesNearTown['W'], $scope.forcesNearTown['E'])
             );
 
-            console.log($scope.allForcesNearTown);
+            $log.log('Forces near town:', $scope.allForcesNearTown);
 
             $scope.phase = 'invaderArrived';
         }
@@ -151,6 +151,54 @@ angular.module('convicted', ['ui.bootstrap'])
                 $scope.currentMorale--;
             }, 250);
 
+        }
+
+        //Distribute loot among players
+        $scope.distributeLoot = function () {
+
+            //prepare empty loots
+            $scope.playersLoot = [];
+            for (var i = 0; i < $scope.playersNum; i++) {
+                $scope.playersLoot.push({'wood':  0, 'stone': 0, 'iron': 0, 'gold': 0})
+            }
+
+            //prepare loot to distribute
+            var invaderLoot = $scope.invaderType.loot[$scope.round-1];
+            var loot = {
+                'wood':  invaderLoot.wood + $scope.playerNumInfo[$scope.playersNum - 1].extra_wood_per_player * $scope.playersNum,
+                'stone': invaderLoot.stone,
+                'iron': invaderLoot.iron,
+                'gold': invaderLoot.gold
+            }
+
+            //distribute
+            $log.log('Distributing', loot);
+            var playerNum = 0;
+            while (true) {
+                var playerLoot = $scope.playersLoot[playerNum];
+
+                if (loot.gold > 0) {
+                    playerLoot.gold += 1;
+                    loot.gold -= 1;
+                } else if (loot.iron > 0) {
+                    playerLoot.iron += 1;
+                    loot.iron -= 1;
+                } else if (loot.stone > 0) {
+                    playerLoot.stone += 1;
+                    loot.stone -= 1;
+                } else if (loot.wood > 0) {
+                    playerLoot.wood += 1;
+                    loot.wood -= 1;
+                } else {
+                    break;
+                }
+
+                playerNum++;
+
+                if (playerNum == $scope.playersNum) {
+                    playerNum = 0;
+                }
+            }
         }
     })
 

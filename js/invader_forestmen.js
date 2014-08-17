@@ -58,20 +58,20 @@
             {'wood':  4, 'stone': 0, 'iron': 0, 'gold': 0}, //Round 3
             {'wood':  4, 'stone': 1, 'iron': 0, 'gold': 0}, //Round 4
             {'wood':  5, 'stone': 2, 'iron': 0, 'gold': 0}, //Round 5
-            {'wood':  6, 'stone': 3, 'iron': 1, 'gold': 0}, //Round 6
-            {'wood':  6, 'stone': 2, 'iron': 2, 'gold': 0}, //Round 7
-            {'wood':  8, 'stone': 3, 'iron': 2, 'gold': 0}, //Round 8
-            {'wood': 10, 'stone': 3, 'iron': 3, 'gold': 0}, //Round 9
-            {'wood': 10, 'stone': 3, 'iron': 3, 'gold': 0}, //Round 10
-            {'wood': 10, 'stone': 4, 'iron': 3, 'gold': 0}, //Round 11
-            {'wood': 11, 'stone': 4, 'iron': 4, 'gold': 0}, //Round 12
-            {'wood': 11, 'stone': 4, 'iron': 4, 'gold': 1}, //Round 13
-            {'wood': 11, 'stone': 5, 'iron': 4, 'gold': 1}, //Round 14
-            {'wood': 12, 'stone': 5, 'iron': 5, 'gold': 1}, //Round 15
-            {'wood': 12, 'stone': 5, 'iron': 5, 'gold': 2}, //Round 16
-            {'wood': 12, 'stone': 6, 'iron': 5, 'gold': 2}, //Round 17
-            {'wood': 13, 'stone': 6, 'iron': 6, 'gold': 2}, //Round 18
-            {'wood': 13, 'stone': 6, 'iron': 6, 'gold': 3}  //Round 19
+            {'wood':  6, 'stone': 3, 'iron': 0, 'gold': 0}, //Round 6
+            {'wood':  6, 'stone': 2, 'iron': 0, 'gold': 0}, //Round 7
+            {'wood':  8, 'stone': 3, 'iron': 0, 'gold': 0}, //Round 8
+            {'wood': 10, 'stone': 3, 'iron': 1, 'gold': 0}, //Round 9
+            {'wood': 10, 'stone': 3, 'iron': 1, 'gold': 1}, //Round 10
+            {'wood': 10, 'stone': 4, 'iron': 1, 'gold': 1}, //Round 11
+            {'wood': 11, 'stone': 4, 'iron': 1, 'gold': 1}, //Round 12
+            {'wood': 11, 'stone': 4, 'iron': 2, 'gold': 2}, //Round 13
+            {'wood': 11, 'stone': 5, 'iron': 2, 'gold': 2}, //Round 14
+            {'wood': 12, 'stone': 5, 'iron': 3, 'gold': 2}, //Round 15
+            {'wood': 12, 'stone': 5, 'iron': 3, 'gold': 3}, //Round 16
+            {'wood': 12, 'stone': 6, 'iron': 4, 'gold': 3}, //Round 17
+            {'wood': 13, 'stone': 6, 'iron': 5, 'gold': 3}, //Round 18
+            {'wood': 13, 'stone': 6, 'iron': 6, 'gold': 4}  //Round 19
         ],
         arriveBehaviour: {
             avoidsMoats: false,

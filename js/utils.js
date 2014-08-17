@@ -34,7 +34,7 @@ function mergeForces(force1, force2) {
             sum += force2[i];
         }
 
-        result.push(force1[i] + force2[i]);
+        result.push(sum);
     }
 
     return result;

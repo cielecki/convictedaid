@@ -60,9 +60,9 @@
             {'wood': 4, 'stone': 5, 'iron': 5, 'gold': 0}, //Round 10
             {'wood': 5, 'stone': 6, 'iron': 5, 'gold': 0}, //Round 11
             {'wood': 5, 'stone': 6, 'iron': 5, 'gold': 1}, //Round 12
-            {'wood': 5, 'stone': 6, 'iron': 5, 'gold': 1}, //Round 13
-            {'wood': 6, 'stone': 6, 'iron': 6, 'gold': 1}, //Round 14
-            {'wood': 6, 'stone': 7, 'iron': 6, 'gold': 1}, //Round 15
+            {'wood': 5, 'stone': 6, 'iron': 6, 'gold': 1}, //Round 13
+            {'wood': 6, 'stone': 7, 'iron': 6, 'gold': 1}, //Round 14
+            {'wood': 6, 'stone': 7, 'iron': 7, 'gold': 2}, //Round 15
             {'wood': 7, 'stone': 7, 'iron': 7, 'gold': 2}, //Round 16
             {'wood': 8, 'stone': 8, 'iron': 7, 'gold': 3}, //Round 17
             {'wood': 8, 'stone': 8, 'iron': 6, 'gold': 3}, //Round 18
