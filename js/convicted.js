@@ -34,6 +34,13 @@ angular.module('convicted', ['ui.bootstrap'])
             $scope.forcesNearTown = null;
         })
 
+        $scope.$watchGroup(['round', 'playersNum'], function () {
+            var totalActions = 12 + (($scope.round == 10 || $scope.round == 15 || $scope.round == 20) ? 6 : 0)
+
+            $scope.actionsPerPlayer = Math.floor(totalActions / $scope.playersNum)
+            $scope.additionalFirstPlayerActions = totalActions - $scope.actionsPerPlayer * $scope.playersNum;
+        })
+
         $scope.defendersReadyCb = function() {
             var arriveBehaviour = $scope.invaderType.arriveBehaviour;
             if (arriveBehaviour.avoidsMoats || arriveBehaviour.goesForWeakestWall) {
@@ -112,6 +119,13 @@ angular.module('convicted', ['ui.bootstrap'])
                 $scope.forcesNearTown['N'] = mergeForces($scope.forcesNearTown['N'], forces.gate);
             }
 
+            $scope.allForcesNearTown = mergeForces(
+                mergeForces($scope.forcesNearTown['N'], $scope.forcesNearTown['S']),
+                mergeForces($scope.forcesNearTown['W'], $scope.forcesNearTown['E'])
+            );
+
+            console.log($scope.allForcesNearTown);
+
             $scope.phase = 'invaderArrived';
         }
 
@@ -129,7 +143,7 @@ angular.module('convicted', ['ui.bootstrap'])
                 var result = rollDie();
 
                 if (result > $scope.currentMorale) {
-                    $scope.loyalityTestResult = 'Invaders run away! The battle is over!';
+                    $scope.loyalityTestResult = 'Invaders run away!';
                 } else {
                     $scope.loyalityTestResult = 'Invaders stay and fight';
                 }

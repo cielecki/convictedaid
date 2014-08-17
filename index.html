@@ -103,10 +103,8 @@
                 </span>
 
                 <img src="images/actionmarker.png" width="32px">
-                <span ng-show="playersNum == 1">Player receives <strong>12</strong> action tokens</span>
-                <span ng-show="playersNum == 2">Each player receives <strong>6</strong> action tokens</span>
-                <span ng-show="playersNum == 3">Each player receives <strong>4</strong> action tokens</span>
-                <span ng-show="playersNum == 4">Each player receives <strong>3</strong> action tokens</span><br/>
+                <span ng-show="playersNum === 1">Player receives <strong>{{actionsPerPlayer}}</strong> action tokens</span>
+                <span ng-show="playersNum !== 1">Each player receives <strong>{{actionsPerPlayer}}</strong> action tokens <span ng-show="additionalFirstPlayerActions > 0">, the first player receives additional <strong>{{additionalFirstPlayerActions}}</strong> actions</span></span><br/>
 
                 <span ng-show="round != 1">
                     <img src="images/enemies.png" width="32px"> Remove all of the invader’s units from the board.<br/>
@@ -274,21 +272,31 @@
 
         <h1 class="primary-message">{{invaderType.name}} are invading!</h1>
 
-        <p>Step 1. Defender’s Ranged Units attack </p>
-        <p>Step 2. Invader’s Ranged Units attack</p>
-        <p>Step 3. Defender’s Siege Machines attack</p>
-        <p>Step 4. Invader’s Siege Machines attack</p>
-        <p>Step 5. Regrouping the enemy to the Foreground Zone</p>
-        <p>Step 6. Defender’s Ranged Units second attack</p>
-        <p>Step 7. Regrouping defenders</p>
-        <p>Step 8. Invader’s Ranged Units second attack </p>
-        <p>Step 9. Forming Combat Groups</p>
-        <p>Step 10. Using Cauldrons/Boulders</p>
-        <p>Step 11. Assigning defender’s units to Combat Groups</p>
-        <p>Step 12. Close combat outcome</p>
-        <p>Step 13. Destroying the Town/regrouping enemy units</p>
-        <p>Step 14. Loyalty test. <label>Current morale:</label> <input type="number" ng-model="currentMorale" placeholder="1,2,3 etc"> <button ng-click="performLoyalityTest()">Loyality test</button> <span><strong>{{loyalityTestResult}}</strong></span></p>
-        <p><em>Note:</em> Loyality test will automatically decrease morale after the test so you don't have to change it manually</p>
+        <div class="row">
+            <div class="col-md-6">
+                Step 1. Defender’s Ranged Units attack<br/>
+                Step 2. Invader’s Ranged Units attack<br/><br/>
+                Step 3. Defender’s Siege Machines attack<br/>
+                Step 4. Invader’s Siege Machines attack<br/>
+                Step 5. Regrouping the enemy to the Foreground Zone<br/>
+                Step 6. Defender’s Ranged Units second attack<br/>
+                Step 7. Regrouping defenders<br/>
+                Step 8. Invader’s Ranged Units second attack<br/>
+                Step 9. Forming Combat Groups<br/>
+                Step 10. Using Cauldrons/Boulders<br/>
+                Step 11. Assigning defender’s units to Combat Groups<br/>
+                Step 12. Close combat outcome<br/>
+                Step 13. Destroying the Town/regrouping enemy units<br/><br/>
+                Step 14. Loyalty test.<br/><label>Current morale:</label> <input type="number" ng-model="currentMorale" placeholder="1,2,3 etc"> <button class="btn btn-default" ng-click="performLoyalityTest()">Loyality test</button> <span><strong>{{loyalityTestResult}}</strong></span>
+                <p><em>Note:</em> Loyality test will automatically decrease morale after the test so you don't have to change it manually</p>
+            </div>
+            <div class="col-md-6">
+                <p><strong>Forces near the town:</strong></p>
+                <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
+            </div>
+        </div>
+
+
         <button class="btn btn-default" ng-click="phase = 'invaderArrived'">< back</button>
         <button class="btn btn-primary" ng-click="phase = 'looting'">Loot!</button>
     </div>
