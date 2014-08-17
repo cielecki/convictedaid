@@ -1,11 +1,8 @@
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 // Primary convicted module
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-angular.module('convicted', [])
+angular.module('convicted', ['ui.bootstrap'])
     .controller('GameController', function($scope, $timeout) {
 
         //default global setup
@@ -46,35 +43,6 @@ angular.module('convicted', [])
             }
         }
 
-        function sectionStrength(dirid) {
-            var defence = $scope.defences[dirid];
-
-            var factor = {
-                "" : 1.0,
-                "Ditch" : 1.1,
-                "Sharpened stakes" : 1.1,
-                "Moat" : 1.3
-            }[defence.protection];
-
-            return (defence.wallEN + defence.unitsST) * factor;
-        }
-
-        function calculateMinSectionStrength() {
-            var dirIds = ['N', 'S', 'W', 'E'];
-            var minSectionStrength = null;
-
-            for (var i in dirIds) {
-                var dirId = dirIds[i];
-                var currentSectionStrength = sectionStrength(dirId);
-
-                if (minSectionStrength === null || currentSectionStrength < minSectionStrength) {
-                    minSectionStrength = currentSectionStrength;
-                }
-            }
-
-            return minSectionStrength;
-        }
-
         $scope.enemyGatheredInformationCb = function() {
             var arriveBehaviour = $scope.invaderType.arriveBehaviour;
             var defences = $scope.defences;
@@ -82,12 +50,12 @@ angular.module('convicted', [])
 
             //find a weakest wall and remove any walls that are stronger
             if (arriveBehaviour.goesForWeakestWall) {
-                var minSectionStrength = calculateMinSectionStrength();
+                var minSectionStrength = calculateMinSectionStrength($scope.defences);
                 var dirIdsWithLowestStrength = [];
 
                 for (var i in availableDistribution) {
                     var dirId = availableDistribution[i];
-                    var strength = sectionStrength(dirId);
+                    var strength = sectionStrength(dirId, $scope.defences);
                     if (strength <= minSectionStrength) {
                         dirIdsWithLowestStrength.push(dirId);
                     }
@@ -170,8 +138,6 @@ angular.module('convicted', [])
             }, 250);
 
         }
-
-
     })
 
     // Draw a unit vector
@@ -236,42 +202,7 @@ angular.module('convicted', [])
                 dirid: '@',
                 defences: '='
             },
-            templateUrl: 'partials/defences-entry.html'
+            templateUrl: 'partials/defences_entry.html'
         };
     })
 
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-// Utility functions
-////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-// Returns a random element in a dictionary
-var randomPropertyInObject = function (object) {
-  var keys = Object.keys(object);
-  return object[keys[Math.floor(keys.length * Math.random())]];
-};
-
-// Returns a random element in an array
-var randomElementInArray = function(arr) {
-    return arr[Math.floor(Math.random()*arr.length)];
-}
-
-// Rolls a die and returns the result
-function rollDie(sides) {
-    if(!sides) sides = 6;
-    with(Math) return 1 + floor(random() * sides);
-}
-
-// Merges two vectors representing counts of unit types
-function mergeForces(force1, force2) {
-    var result = [];
-
-    if (force1.length != force2.length) {
-        throw "LENGTH MISMATCH"
-    }
-
-    for (var i in force1) {
-        result.push(force1[i] + force2[i]);
-    }
-
-    return result;
-}
