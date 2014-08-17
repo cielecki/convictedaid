@@ -1,6 +1,6 @@
 <strong>{{name}}</strong><br/><br/>
-Wall EN: <input class="form-control input-sm" type="number" ng-model="defences[dirid].wallEN" style="width: 70px" /><br/><br/>
-Units ST: <input class="form-control input-sm" type="number" ng-model="defences[dirid].unitsST" style="width: 70px" />
+Wall EN: <button ng-click="defences[dirid].wallEN = defences[dirid].wallEN - 1">-</button><input class="form-control input-sm" type="number" ng-model="defences[dirid].wallEN" style="width: 70px" /><button ng-click="defences[dirid].wallEN = defences[dirid].wallEN + 1">+</button><br/><br/>
+Units ST: <button ng-click="defences[dirid].unitsST = defences[dirid].unitsST - 1">-</button><input class="form-control input-sm" type="number" ng-model="defences[dirid].unitsST" style="width: 70px" /><button ng-click="defences[dirid].unitsST = defences[dirid].unitsST + 1">+</button>
 <br/><br/>
 Protection: <select ng-model="defences[dirid].protection" class="form-control input-sm">
   <option value="">-</option>
