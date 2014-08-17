@@ -312,7 +312,7 @@
         </p>
 
         <p ng-show="!invaderType.noLootWhenDifficultyAt3 || invaderType.difficulty < 3">
-            <resources resources="invaderType.loot[round+1]"></resources>
+            <resources resources="invaderType.loot[round-1]"></resources>
             <span ng-show="playerNumInfo[playersNum-1].extra_wood_per_player > 0">(+ <resource type="'wood'" quantity="playerNumInfo[playersNum-1].extra_wood_per_player"></resource> for each player)</span>
         </p>
 
