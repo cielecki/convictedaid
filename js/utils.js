@@ -23,11 +23,17 @@ function rollDie(sides) {
 function mergeForces(force1, force2) {
     var result = [];
 
-    if (force1.length != force2.length) {
-        throw "LENGTH MISMATCH"
-    }
+    for (var i = 0; i < force1.length || i < force2.length; i++) {
+        var sum = 0;
 
-    for (var i in force1) {
+        if (i < force1.length) {
+            sum += force1[i];
+        }
+
+        if (i < force2.length) {
+            sum += force2[i];
+        }
+
         result.push(force1[i] + force2[i]);
     }
 

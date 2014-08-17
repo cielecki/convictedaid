@@ -11,7 +11,7 @@
 
     <p ng-repeat="trait in unitType.traits">
         <span ng-show="showTrait(trait)">
-            <strong>{{trait.name}}</strong><br/><span ng-bind-html="toTrusted(trait.description)"></div>
+            <strong>{{trait.name}}</strong><br/><span ng-bind-html="toTrusted(trait.description)"></span>
         </span>
     </p>
 </div>
