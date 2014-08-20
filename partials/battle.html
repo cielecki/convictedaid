@@ -1,155 +1,92 @@
 <div ng-if="$root.phase == 'battle'" ng-controller="BattleController">
-    <h2>III. SIEGE - BATTLE STEP {{step}}</h2>
+    <div ng-show="subPhase == 'start'">
 
-    <div ng-show="step == 1">
-        <h1 class="primary-message">Defender’s are attacking with their Ranged Units!</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-default" ng-click="nextStep()">We have no ranged units.</button>
-        <button class="btn btn-default" ng-click="invaderDefeated()">We defeated the {{invaderType.name}}</button>
-        <button class="btn btn-primary" ng-click="nextStep()">We have ranged units and they did what they could.</button>
-    </div>
-
-    <div ng-show="step == 2">
-        <h1 class="primary-message">{{invaderType.name}} are attacking with their Ranged Units!</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-default" ng-click="nextStep()">{{invaderType.name}} have no more ranged units</button>
-        <button class="btn btn-primary" ng-click="nextStep()">{{invaderType.name}} have ranged units and they performed their attacks.</button>
-    </div>
-
-    <div ng-show="step == 3">
-        <h1 class="primary-message">Defender’s Siege Machines attack</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-default" ng-click="nextStep()">We have no siege units.</button>
-        <button class="btn btn-default" ng-click="invaderDefeated()">We defeated the {{invaderType.name}}</button>
-        <button class="btn btn-primary" ng-click="nextStep()">We have siege units and they did what they could.</button>
-    </div>
-
-    <div ng-show="step == 4">
-        <h1 class="primary-message">Invader’s Siege Machines attack!</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-default" ng-click="skipInvaderSiege = true; nextStep()">{{invaderType.name}} have no more siege units</button>
-        <button class="btn btn-primary" ng-click="nextStep()">{{invaderType.name}} have siege units and they performed their attacks.</button>
-    </div>
-
-    <div ng-show="step == 5">
-        <h1 class="primary-message">Regrouping the enemy to the Foreground Zone!</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-primary" ng-click="nextStep()">Some of the melee {{invaderType.name}} remain in the deployment zone.</button>
-        <button class="btn btn-primary" ng-click="nextStep()">{{invaderType.name}} moved all units to the foreground.</button>
-    </div>
-
-    <div ng-show="step == 6">
-        <h1 class="primary-message">Defender’s Ranged Units second attack!</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-default" ng-click="nextStep()">We have no ranged units.</button>
-        <button class="btn btn-default" ng-click="invaderDefeated()">We defeated the {{invaderType.name}}</button>
-        <button class="btn btn-primary" ng-click="nextStep()">We have ranged units and they did what they could.</button>
-    </div>
-
-    <div ng-show="step == 7">
-        <h1 class="primary-message">Regrouping defenders!</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-primary" ng-click="nextStep()">Regrouping completed</button>
-    </div>
-
-    <div ng-show="step == 8">
-        <h1 class="primary-message">{{invaderType.name}} Ranged Units second attack</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-default" ng-click="nextStep()">{{invaderType.name}} have no more ranged units</button>
-        <button class="btn btn-primary" ng-click="nextStep()">{{invaderType.name}} have ranged units and they performed their attacks.</button>
-    </div>
-
-    <div ng-show="step == 9">
-        <h1 class="primary-message">{{invaderType.name}} are forming Combat Groups!</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-primary" ng-click="nextStep()">Done</button>
-    </div>
-
-    <div ng-show="step == 10">
-        <h1 class="primary-message">Using Cauldrons/Boulders</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-primary" ng-click="nextStep()">We have used all boulders, cauldrons and hails of fire</button>
-        <button class="btn btn-primary" ng-click="nextStep()">We still have some in reserve</button>
-    </div>
-
-    <div ng-show="step == 11">
-        <h1 class="primary-message">Assigning defender’s units to Combat Groups</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-primary" ng-click="nextStep()">Done</button>
-    </div>
-
-    <div ng-show="step == 12">
-        <h1 class="primary-message">Close combat outcome</h1>
-
-        <p><strong>Forces near the town:</strong></p>
-        <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
-
-        <button class="btn btn-default" ng-click="invaderDefeated()">Invader is defeated</button>
-        <button class="btn btn-primary" ng-click="nextStep()">Some of the invaders will attack the Town!</button>
-        <button class="btn btn-primary" ng-click="step = 13;nextStep()">We are safe</button>
-    </div>
-
-    <div ng-show="step == 13">
-        <h1 class="primary-message">Destroying the Town/regrouping enemy units</h1>
-
-        <button class="btn btn-primary" ng-click="nextStep()">Done</button>
-    </div>
-
-    <div ng-show="step == 14">
-        <h1 class="primary-message">Loyalty test!</h1>
-
-        <div ng-show="!invadersSuffered50PercentLosses">
-            <p>Have the invaders suffered 50 percent losses?</p>
-            <button class="btn btn-primary" ng-click="nextStep()">No</button>
-            <button class="btn btn-primary" ng-click="performLoyalityTest()">Yes</button>
+        <div class="flow-buttons">
+            <p>
+                <span ng-show="!invadersSuffered50PercentLosses">
+                    Invader losses:
+                    <button class="btn btn-primary" ng-click="nextRoundOfCombat()">Less than {{unitsKilledToBreakMorale}}</button>
+                    <button class="btn btn-primary" ng-click="performLoyaltyTest()">At least {{unitsKilledToBreakMorale}}</button>
+                    <button class="btn btn-primary" ng-click="invaderDefeated()">All invaders killed</button>
+                </span>
+                <span ng-show="invadersSuffered50PercentLosses">
+                    Invader status:
+                    <button class="btn btn-primary" ng-click="performLoyaltyTest()">Some invaders remain</button>
+                    <button class="btn btn-primary" ng-click="invaderDefeated()">All invaders killed</button>
+                </span>
+            </p>
+            <button class="btn btn-default" ng-click="$root.phase = 'invaderArrived'">< back</button>
         </div>
 
-        <div ng-show="$root.battleResult">
-            {{$root.battleResult}}
-            <button class="btn btn-primary" ng-click="nextStep()">OK</button>
-        </div>
-    </div>
+        <h2>III. SIEGE - BATTLE</h2>
 
-    <!-- SIEGE BATTLE -->
-    <div ng-show="phase == 'battle'">
+        <h1 class="primary-message">{{invaderType.name}} are invading!</h1>
+
         <div class="row">
             <div class="col-md-6">
+                <p><strong>Forces near the town:</strong></p>
+                <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
+            </div>
+            <div class="col-md-6">
+                Step 1. Defender’s Ranged Units attack<br/>
+                Step 2. Invader’s Ranged Units attack<br/><br/>
+                Step 3. Defender’s Siege Machines attack<br/>
+                Step 4. Invader’s Siege Machines attack<br/><br/>
+                Step 5. Regrouping the enemy to the Foreground Zone<br/>
+                Step 6. Defender’s Ranged Units second attack<br/>
+                Step 7. Regrouping defenders<br/>
+                Step 8. Invader’s Ranged Units second attack<br/><br/>
+                Step 9. Forming Combat Groups<br/>
+                Step 10. Using Cauldrons/Boulders<br/>
+                Step 11. Assigning defender’s units to Combat Groups<br/>
+                Step 12. Close combat outcome<br/>
+                Step 13. Destroying the Town/regrouping enemy units<br/><br/>
+            </div>
+        </div>
+    </div>
 
+    <div ng-show="subPhase == 'battleOngoing'">
+
+        <div class="flow-buttons">
+            <p>
+                <span ng-show="!invadersSuffered50PercentLosses">
+                    Invader losses:
+                    <button class="btn btn-primary" ng-click="nextRoundOfCombat()">Less than {{unitsKilledToBreakMorale}}</button>
+                    <button class="btn btn-primary" ng-click="performLoyaltyTest()">At least {{unitsKilledToBreakMorale}}</button>
+                    <button class="btn btn-primary" ng-click="invaderDefeated()">All invaders killed</button>
+                </span>
+                <span ng-show="invadersSuffered50PercentLosses">
+                    Invader status:
+                    <button class="btn btn-primary" ng-click="performLoyaltyTest()">Some invaders remain</button>
+                    <button class="btn btn-primary" ng-click="invaderDefeated()">All invaders killed</button>
+                </span>
+            </p>
+            <button class="btn btn-default" ng-click="$root.phase = 'invaderArrived'">< back</button>
+        </div>
+
+        <h2>III. SIEGE - BATTLE</h2>
+
+        <h1 class="primary-message">{{invaderType.name}} are invading!</h1>
+        <h3>{{battleResult}}</h3>
+
+        <div class="row">
+            <div class="col-md-6">
+                <p><strong>Forces near the town:</strong></p>
+                <p><forces forces="allForcesNearTown" type="invaderType"></forces></p>
+            </div>
+            <div class="col-md-6">
+                Step 3. Defender’s Siege Machines attack<br/>
+                Step 4. Invader’s Siege Machines attack<br/><br/>
+                Step 5. Regrouping the enemy to the Foreground Zone<br/>
+                Step 6. Defender’s Ranged Units second attack<br/>
+                Step 7. Regrouping defenders<br/>
+                Step 8. Invader’s Ranged Units second attack<br/><br/>
+                Step 9. Forming Combat Groups<br/>
+                Step 10. Using Cauldrons/Boulders<br/>
+                Step 11. Assigning defender’s units to Combat Groups<br/>
+                Step 12. Close combat outcome<br/>
+                Step 13. Destroying the Town/regrouping enemy units<br/><br/>
             </div>
         </div>
     </div>
 </div>
-

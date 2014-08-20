@@ -1,4 +1,10 @@
 <div ng-if="phase == 'looting'" ng-controller="LootController">
+
+    <div class="flow-buttons">
+        <button class="btn btn-default" ng-click="$root.phase = 'battle'">< back</button>
+        <button class="btn btn-primary" ng-click="$root.round = round + 1; $root.phase = 'preparations'">Next round</button>
+    </div>
+
     <h2>III. SIEGE - LOOT</h2>
 
     <h1 class="primary-message">{{battleResult}}</h1>
@@ -25,7 +31,4 @@
         </div>
     </div>
     <br/>
-
-    <button class="btn btn-default" ng-click="$root.phase = 'battle'">< back</button>
-    <button class="btn btn-primary" ng-click="$root.round = round + 1; $root.phase = 'preparations'">Next round</button>
 </div>

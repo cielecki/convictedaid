@@ -4,65 +4,43 @@
 
 angular.module('battle', [])
     .controller('BattleController', function($scope, $rootScope, $timeout, $log) {
-        $rootScope.battleResult = null;
-
-        //TODO: all the skips
-        //TODO: invader analysis for auto skips
-        //TODO: defender analysis for auto skips
         //TODO: moving from root scope to gs.xxx and undo
 
-        $scope.step = 1;
+        $scope.subPhase = 'start';
         $scope.currentMorale = $rootScope.invaderType.morale;
         $scope.invadersSuffered50PercentLosses = false;
-        $scope.skipInvaderSiege = false;
-        $scope.skipDefenderSiege = false;
 
-        function invaderHasSiege() {
-            for (var i in $rootScope.allForcesNearTown) {
-                if ($rootScope.allForcesNearTown[i] > 0 && $rootScope.invaderType.unitTypes[i].activateDuringSiegePhase) {
-                    return true;
-                }
-            }
-
-            return false;
+        var totalCount = 0;
+        for (var i in $scope.allForcesNearTown) {
+            totalCount += $scope.allForcesNearTown[i];
         }
 
-        $scope.nextStep = function() {
-            $scope.step += 1;
+        $scope.unitsKilledToBreakMorale = Math.ceil(totalCount/2);
 
-            if ($scope.step == 3 && $scope.skipDefenderSiege) {
-                $scope.nextStep();
-            }
-
-            if ($scope.step == 4 && (!invaderHasSiege() || $scope.skipInvaderSiege)) {
-                $scope.nextStep();
-            }
-
-            if ($scope.step > 14) {
-                $scope.step = 3;
-            }
+        $scope.nextRoundOfCombat = function () {
+            var texts = [$rootScope.invaderType.name + " continue to fight!", $rootScope.invaderType.name + " fight on!"]
+            $rootScope.battleResult = $rootScope.battleResult == texts[0] ? texts[1] : texts[0];
+            $scope.subPhase = 'battleOngoing';
         }
 
         $scope.invaderDefeated = function() {
             $rootScope.battleResult = $rootScope.invaderType.name + " are defeated!";
             $rootScope.phase = 'looting';
+            $rootScope.distributeLoot();
         }
 
-        $scope.performLoyalityTest = function() {
+        $scope.performLoyaltyTest = function() {
             $scope.invadersSuffered50PercentLosses = true;
-            $scope.loyalityTestResult = '...'
 
-            $timeout(function() {
-                var result = rollDie();
+            var result = rollDie();
 
-                if (result > $scope.currentMorale) {
-                    $rootScope.battleResult = 'Invaders ran away! (Rolled ' + result + ' and the current morale was ' + $scope.currentMorale + ')';
-                    $rootScope.phase = 'looting';
-                } else {
-                    $rootScope.battleResult = 'Invaders stay and fight (Rolled ' + result + ' and the current morale was ' + $scope.currentMorale + ')';
-                    $scope.currentMorale--;
-                }
-
-            }, 250);
+            if (result > $scope.currentMorale) {
+                $rootScope.battleResult = 'Invaders ran away! (Rolled ' + result + ' and the current morale was ' + $scope.currentMorale + ')';
+                $rootScope.phase = 'looting';
+            } else {
+                $rootScope.battleResult = 'Invaders stay and fight (Rolled ' + result + ' and the current morale was ' + $scope.currentMorale + ')';
+                $scope.currentMorale--;
+                $scope.subPhase = 'battleOngoing';
+            }
         }
     });
