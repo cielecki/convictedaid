@@ -9,7 +9,7 @@ angular.module('convicted', ['battle', 'resources', 'ui.bootstrap'])
         $rootScope.invaderTypes = INVADER_TYPES;
         $rootScope.round = 1;
         $rootScope.playersNum = 2;
-        $rootScope.phase = 'gameSetup';
+        $rootScope.phase = 'intro';
         $rootScope.defences = {
             'N': {moat: false, weak: false},
             'S': {moat: false, weak: false},
@@ -67,9 +67,9 @@ angular.module('convicted', ['battle', 'resources', 'ui.bootstrap'])
                             dirIdsWithLowestStrength.push(dirId);
                         }
                     }
-                }
 
-                availableDistribution = dirIdsWithLowestStrength;
+                    availableDistribution = dirIdsWithLowestStrength;
+                }
             }
 
             //are all directions moats? if not, remove all moats
@@ -135,19 +135,20 @@ angular.module('convicted', ['battle', 'resources', 'ui.bootstrap'])
                 forces: '=',
                 invaderType: '=type'
             },
-            controller: function ($rootScope, $modal, $log) {
+            controller: function ($scope, $modal, $log) {
 
-                $rootScope.showUnitInfo = function (unitId) {
+                $scope.showUnitInfo = function (unitId) {
+                    console.log('asd');
                     var modalInstance = $modal.open({
                         templateUrl: 'partials/unit_info.html',
-                        scope: $rootScope,
-                        controller: function ($rootScope, $modalInstance, $sce) {
-                            $rootScope.unitType = $rootScope.invaderType.unitTypes[unitId];
-                            $rootScope.ok = function () { $modalInstance.dismiss('ok'); }
-                            $rootScope.showTrait = function (trait) {
+                        scope: $scope,
+                        controller: function ($scope, $rootScope, $modalInstance, $sce) {
+                            $scope.unitType = $rootScope.invaderType.unitTypes[unitId];
+                            $scope.ok = function () { $modalInstance.dismiss('ok'); }
+                            $scope.showTrait = function (trait) {
                                return typeof trait.minDifficulty === 'undefined' || trait.minDifficulty <= $rootScope.invaderType.difficulty;
                             }
-                            $rootScope.toTrusted = function(html_code) {
+                            $scope.toTrusted = function(html_code) {
                                 return $sce.trustAsHtml(html_code);
                             }
                         }

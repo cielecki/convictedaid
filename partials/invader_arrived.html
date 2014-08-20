@@ -1,4 +1,10 @@
 <div ng-show="phase == 'invaderArrived'">
+
+    <div class="flow-buttons">
+        <button class="btn btn-default" ng-click="$root.phase = 'invaderScouted'">< back</button>
+        <button class="btn btn-primary" ng-click="$root.phase = 'battle'">Proceed to battle</button>
+    </div>
+
     <h2>III. SIEGE - SETUP</h2>
 
     <h1 class="primary-message">{{invaderType.name}} arrive and attack from the {{ {'S': 'South', 'N': 'North', 'E':'East', 'W':'West'}[MAD] }}!</h1>
@@ -41,7 +47,4 @@
             </span>
         </div>
     </div>
-
-    <button class="btn btn-default" ng-click="$root.phase = 'invaderScouted'">< back</button>
-    <button class="btn btn-primary" ng-click="$root.phase = 'battle'">Proceed to battle</button>
 </div>
