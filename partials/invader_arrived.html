@@ -1,0 +1,47 @@
+<div ng-show="phase == 'invaderArrived'">
+    <h2>III. SIEGE - SETUP</h2>
+
+    <h1 class="primary-message">{{invaderType.name}} arrive and attack from the {{ {'S': 'South', 'N': 'North', 'E':'East', 'W':'West'}[MAD] }}!</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p><img src="images/enemies.png" width="32px"> Position the troops on Deployment Zones:</p>
+
+
+            <table style="width: 100%; text-align: center;">
+                <tr>
+                    <td></td>
+                    <td rowspan="2"><strong>NORTH</strong><br/><forces forces="forcesNearTown['N']" type="invaderType"></forces><br/><br/></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td rowspan="2"><strong>WEST</strong><br/> <forces forces="forcesNearTown['W']" type="invaderType"></forces></td>
+                    <td rowspan="2"><strong>EAST</strong><br/> <forces forces="forcesNearTown['E']" type="invaderType"></forces></td>
+                </tr>
+                <tr>
+                    <td rowspan="2"><strong>SOUTH</strong><br/><forces forces="forcesNearTown['S']" type="invaderType"></forces></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td></td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
+    </br>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <span ng-show="invaderType.cantUseBlessingsAgainstThisInvader">
+                <img src="images/protection.png" width="32px"> <strong>Due to invader ability, defenders can not use blessings during this siege.</strong>
+            </span>
+            <span ng-show="!invaderType.cantUseBlessingsAgainstThisInvader">
+                <img src="images/protection.png" width="32px"> Defenders, use your Blessings and Spells: Aura, Barrier, Magic Fire.
+            </span>
+        </div>
+    </div>
+
+    <button class="btn btn-default" ng-click="$root.phase = 'invaderScouted'">< back</button>
+    <button class="btn btn-primary" ng-click="$root.phase = 'battle'">Proceed to battle</button>
+</div>

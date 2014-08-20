@@ -2,69 +2,70 @@
 // Primary convicted module
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-angular.module('convicted', ['ui.bootstrap'])
-    .controller('GameController', function($scope, $timeout, $log) {
+angular.module('convicted', ['battle', 'resources', 'ui.bootstrap'])
+    .controller('GameController', function($rootScope, $scope, $timeout, $log) {
 
         //default global setup
-        $scope.invaderTypes = INVADER_TYPES;
-        $scope.round = 1;
-        $scope.playersNum = 2;
-        $scope.phase = 'gameSetup';
-        $scope.defences = {
-            'N': {wallEN: 0, unitsST: 0, protection: ""},
-            'S': {wallEN: 0, unitsST: 0, protection: ""},
-            'W': {wallEN: 0, unitsST: 0, protection: ""},
-            'E': {wallEN: 0, unitsST: 0, protection: ""}
+        $rootScope.invaderTypes = INVADER_TYPES;
+        $rootScope.round = 1;
+        $rootScope.playersNum = 2;
+        $rootScope.phase = 'gameSetup';
+        $rootScope.defences = {
+            'N': {moat: false, weak: false},
+            'S': {moat: false, weak: false},
+            'W': {moat: false, weak: false},
+            'E': {moat: false, weak: false}
         }
 
-        $scope.playerNumInfo = [
+        $rootScope.playerNumInfo = [
             {'extra_wood_per_player': 5},
             {'extra_wood_per_player': 2},
             {'extra_wood_per_player': 1},
             {'extra_wood_per_player': 0}
         ]
 
-        $scope.invaderType = null;
-        $scope.sendScouts = function() {
-            $scope.invaderType = randomPropertyInObject($scope.invaderTypes);
+        $rootScope.invaderType = null;
+        $rootScope.sendScouts = function() {
+            $rootScope.invaderType = randomPropertyInObject($rootScope.invaderTypes);
         }
 
-        $scope.$watch("round", function() {
-            $scope.invaderType = null;
-            $scope.forcesNearTown = null;
+        $rootScope.$watch("round", function() {
+            $rootScope.invaderType = null;
+            $rootScope.forcesNearTown = null;
         })
 
-        $scope.$watchGroup(['round', 'playersNum'], function () {
-            var totalActions = 12 + (($scope.round == 10 || $scope.round == 15 || $scope.round == 20) ? 6 : 0)
+        $rootScope.$watchGroup(['round', 'playersNum'], function () {
+            var totalActions = 12 + (($rootScope.round == 10 || $rootScope.round == 15 || $rootScope.round == 20) ? 6 : 0)
 
-            $scope.actionsPerPlayer = Math.floor(totalActions / $scope.playersNum)
-            $scope.additionalFirstPlayerActions = totalActions - $scope.actionsPerPlayer * $scope.playersNum;
+            $rootScope.actionsPerPlayer = Math.floor(totalActions / $rootScope.playersNum)
+            $rootScope.additionalFirstPlayerActions = totalActions - $rootScope.actionsPerPlayer * $rootScope.playersNum;
         })
 
-        $scope.defendersReadyCb = function() {
-            var arriveBehaviour = $scope.invaderType.arriveBehaviour;
+        $rootScope.defendersReadyCb = function() {
+            var arriveBehaviour = $rootScope.invaderType.arriveBehaviour;
             if (arriveBehaviour.avoidsMoats || arriveBehaviour.goesForWeakestWall) {
-                $scope.phase = 'enemyGathersInformation';
+                $rootScope.phase = 'enemyGathersInformation';
             } else {
-                $scope.arriveFromDirection(randomElementInArray(arriveBehaviour.directionDistribution));
+                $rootScope.arriveFromDirection(randomElementInArray(arriveBehaviour.directionDistribution));
             }
         }
 
-        $scope.enemyGatheredInformationCb = function() {
-            var arriveBehaviour = $scope.invaderType.arriveBehaviour;
-            var defences = $scope.defences;
+        $rootScope.enemyGatheredInformationCb = function() {
+            var arriveBehaviour = $rootScope.invaderType.arriveBehaviour;
+            var defences = $rootScope.defences;
             var availableDistribution = arriveBehaviour.directionDistribution.slice(0)
 
             //find a weakest wall and remove any walls that are stronger
             if (arriveBehaviour.goesForWeakestWall) {
-                var minSectionStrength = calculateMinSectionStrength($scope.defences);
-                var dirIdsWithLowestStrength = [];
 
-                for (var i in availableDistribution) {
-                    var dirId = availableDistribution[i];
-                    var strength = sectionStrength(dirId, $scope.defences);
-                    if (strength <= minSectionStrength) {
-                        dirIdsWithLowestStrength.push(dirId);
+                if (defences['N'].weak || defences['S'].weak || defences['E'].weak || defences['W'].weak) {
+                    var dirIdsWithLowestStrength = [];
+
+                    for (var i in availableDistribution) {
+                        var dirId = availableDistribution[i];
+                        if (defences[dirId].weak) {
+                            dirIdsWithLowestStrength.push(dirId);
+                        }
                     }
                 }
 
@@ -73,17 +74,13 @@ angular.module('convicted', ['ui.bootstrap'])
 
             //are all directions moats? if not, remove all moats
             if (arriveBehaviour.avoidsMoats) {
-                var moatsOnAllDirections = defences['N'].protection == 'Moat' &&
-                                           defences['S'].protection == 'Moat' &&
-                                           defences['E'].protection == 'Moat' &&
-                                           defences['W'].protection == 'Moat';
 
-                if (!moatsOnAllDirections) {
+                if (!defences['N'].moat || !defences['S'].moat || !defences['E'].moat || !defences['W'].moat) {
                     var dirIdsWithoutMoats = [];
 
                     for (var i in availableDistribution) {
                         var dirId = availableDistribution[i];
-                        if (defences[dirId].protection !== 'Moat') {
+                        if (!defences[dirId].moat) {
                             dirIdsWithoutMoats.push(dirId);
                         }
                     }
@@ -94,115 +91,39 @@ angular.module('convicted', ['ui.bootstrap'])
 
             console.log('availableDistribution', availableDistribution);
 
-            $scope.arriveFromDirection(randomElementInArray(availableDistribution));
+            $rootScope.arriveFromDirection(randomElementInArray(availableDistribution));
         }
 
-        $scope.forcesNearTown = null;
-        $scope.arriveFromDirection = function(mad) {
-            $scope.MAD = mad;
-            $scope.forcesNearTown = {'N': [], 'S': [], 'W': [], 'E': []}
+        $rootScope.forcesNearTown = null;
+        $rootScope.arriveFromDirection = function(mad) {
+            $rootScope.MAD = mad;
+            $rootScope.forcesNearTown = {'N': [], 'S': [], 'W': [], 'E': []}
 
-            var forces = $scope.invaderType.forces[$scope.round-1];
+            var forces = $rootScope.invaderType.forces[$rootScope.round-1];
 
             if (forces.other) {
-                $scope.forcesNearTown['N'] = forces.other.slice(0);
-                $scope.forcesNearTown['S'] = forces.other.slice(0);
-                $scope.forcesNearTown['W'] = forces.other.slice(0);
-                $scope.forcesNearTown['E'] = forces.other.slice(0);
+                $rootScope.forcesNearTown['N'] = forces.other.slice(0);
+                $rootScope.forcesNearTown['S'] = forces.other.slice(0);
+                $rootScope.forcesNearTown['W'] = forces.other.slice(0);
+                $rootScope.forcesNearTown['E'] = forces.other.slice(0);
             }
 
             if (forces.mad) {
-                $scope.forcesNearTown[$scope.MAD] = forces.mad.slice(0);
+                $rootScope.forcesNearTown[$rootScope.MAD] = forces.mad.slice(0);
             }
 
             if (forces.gate) {
-                $scope.forcesNearTown['N'] = mergeForces($scope.forcesNearTown['N'], forces.gate);
+                $rootScope.forcesNearTown['N'] = mergeForces($rootScope.forcesNearTown['N'], forces.gate);
             }
 
-            $scope.allForcesNearTown = mergeForces(
-                mergeForces($scope.forcesNearTown['N'], $scope.forcesNearTown['S']),
-                mergeForces($scope.forcesNearTown['W'], $scope.forcesNearTown['E'])
+            $rootScope.allForcesNearTown = mergeForces(
+                mergeForces($rootScope.forcesNearTown['N'], $rootScope.forcesNearTown['S']),
+                mergeForces($rootScope.forcesNearTown['W'], $rootScope.forcesNearTown['E'])
             );
 
-            $log.log('Forces near town:', $scope.allForcesNearTown);
+            $log.log('Forces near town:', $rootScope.allForcesNearTown);
 
-            $scope.phase = 'invaderArrived';
-        }
-
-        function fleePercent() {
-            return Math.floor(1/6 * (6 - $scope.currentMorale) * 100);
-        }
-
-        $scope.$watch('invaderType', function(invader) {
-            if (invader) {
-                $scope.currentMorale = invader.morale;
-                $scope.loyalityTestResult = 'Flee chance ' + fleePercent() + '%';
-            }
-        });
-
-        $scope.performLoyalityTest = function() {
-            $scope.loyalityTestResult = '...'
-
-            $timeout(function() {
-                var result = rollDie();
-
-                if (result > $scope.currentMorale) {
-                    $scope.loyalityTestResult = 'Invaders ran away!';
-                } else {
-                    $scope.currentMorale--;
-                    $scope.loyalityTestResult = 'Invaders stay and fight, flee chance ' + fleePercent() + '%';
-                }
-
-            }, 250);
-
-        }
-
-        //Distribute loot among players
-        $scope.distributeLoot = function () {
-
-            //prepare empty loots
-            $scope.playersLoot = [];
-            for (var i = 0; i < $scope.playersNum; i++) {
-                $scope.playersLoot.push({'wood':  0, 'stone': 0, 'iron': 0, 'gold': 0})
-            }
-
-            //prepare loot to distribute
-            var invaderLoot = $scope.invaderType.loot[$scope.round-1];
-            var loot = {
-                'wood':  invaderLoot.wood + $scope.playerNumInfo[$scope.playersNum - 1].extra_wood_per_player * $scope.playersNum,
-                'stone': invaderLoot.stone,
-                'iron': invaderLoot.iron,
-                'gold': invaderLoot.gold
-            }
-
-            //distribute
-            $log.log('Distributing', loot);
-            var playerNum = 0;
-            while (true) {
-                var playerLoot = $scope.playersLoot[playerNum];
-
-                if (loot.gold > 0) {
-                    playerLoot.gold += 1;
-                    loot.gold -= 1;
-                } else if (loot.iron > 0) {
-                    playerLoot.iron += 1;
-                    loot.iron -= 1;
-                } else if (loot.stone > 0) {
-                    playerLoot.stone += 1;
-                    loot.stone -= 1;
-                } else if (loot.wood > 0) {
-                    playerLoot.wood += 1;
-                    loot.wood -= 1;
-                } else {
-                    break;
-                }
-
-                playerNum++;
-
-                if (playerNum == $scope.playersNum) {
-                    playerNum = 0;
-                }
-            }
+            $rootScope.phase = 'invaderArrived';
         }
     })
 
@@ -214,19 +135,19 @@ angular.module('convicted', ['ui.bootstrap'])
                 forces: '=',
                 invaderType: '=type'
             },
-            controller: function ($scope, $modal, $log) {
+            controller: function ($rootScope, $modal, $log) {
 
-                $scope.showUnitInfo = function (unitId) {
+                $rootScope.showUnitInfo = function (unitId) {
                     var modalInstance = $modal.open({
                         templateUrl: 'partials/unit_info.html',
-                        scope: $scope,
-                        controller: function ($scope, $modalInstance, $sce) {
-                            $scope.unitType = $scope.invaderType.unitTypes[unitId];
-                            $scope.ok = function () { $modalInstance.dismiss('ok'); }
-                            $scope.showTrait = function (trait) {
-                               return typeof trait.minDifficulty === 'undefined' || trait.minDifficulty <= $scope.invaderType.difficulty;
+                        scope: $rootScope,
+                        controller: function ($rootScope, $modalInstance, $sce) {
+                            $rootScope.unitType = $rootScope.invaderType.unitTypes[unitId];
+                            $rootScope.ok = function () { $modalInstance.dismiss('ok'); }
+                            $rootScope.showTrait = function (trait) {
+                               return typeof trait.minDifficulty === 'undefined' || trait.minDifficulty <= $rootScope.invaderType.difficulty;
                             }
-                            $scope.toTrusted = function(html_code) {
+                            $rootScope.toTrusted = function(html_code) {
                                 return $sce.trustAsHtml(html_code);
                             }
                         }
@@ -234,36 +155,6 @@ angular.module('convicted', ['ui.bootstrap'])
                 };
             },
             templateUrl: 'partials/unit_vector_info.html'
-        };
-    })
-
-    // Draw a resource pool
-    .directive('resources', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                resources: '='
-            },
-            template:
-                '<resource type="\'wood\'" quantity="resources.wood"></resource> ' +
-                '<resource type="\'stone\'" quantity="resources.stone"></resource> ' +
-                '<resource type="\'iron\'" quantity="resources.iron"></resource> ' +
-                '<resource type="\'gold\'" quantity="resources.gold"></resource>'
-        };
-    })
-
-    // Draw a single resource quantity
-    .directive('resource', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                resourceQuantity: '=quantity',
-                resourceType: '=type'
-            },
-            template:
-                '<span ng-show="resourceQuantity > 0">' +
-                    '{{resourceQuantity}} <img src="images/{{resourceType}}.png" width="32px"/>' +
-                '</span>'
         };
     })
 
@@ -276,17 +167,3 @@ angular.module('convicted', ['ui.bootstrap'])
             return val;
         };
     })
-
-    // Draw a single resource quantity
-    .directive('defencesEntry', function() {
-        return {
-            restrict: 'E',
-            scope: {
-                name: '@',
-                dirid: '@',
-                defences: '='
-            },
-            templateUrl: 'partials/defences_entry.html'
-        };
-    })
-

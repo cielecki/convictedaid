@@ -1,0 +1,42 @@
+
+<!-- SIEGE SETUP PART 1 -->
+<div ng-show="phase == 'invaderScouted'">
+    <h2>III. SIEGE - SETUP</h2>
+
+    <h1 class="primary-message">Scouts report news about an invading army of {{invaderType.name}}</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <div class="row">
+                <div class="col-md-4">
+                    <div ng-show="invaderType.forces[round-1].mad">
+                        <p><strong>Main army</strong><br/>(will attack from the main assault direction):</p>
+                        <p><forces forces="invaderType.forces[round-1].mad" type="invaderType"></forces></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div ng-show="invaderType.forces[round-1].other">
+                        <p><strong>Supporting forces</strong><br/>(will attack from other sides):</p>
+                        <p><forces forces="invaderType.forces[round-1].other" type="invaderType"></forces></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div ng-show="invaderType.forces[round-1].gate">
+                        <p><strong>Battering rams</strong><br/>(will attack the gate):</p>
+                        <p><forces forces="invaderType.forces[round-1].gate" type="invaderType"></forces></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p><img src="images/fortifications.png" width="32px"> Defenders! Set the position of your troops on the Walls, Towers and inside the Keep.</p>
+            <p><strong>Note:</strong> No units except Ranged Units/Siege Machines stationed in the Keep can stay on its grounds.</p>
+        </div>
+    </div>
+
+    <button class="btn btn-default" ng-click="$root.phase = 'preparations'">< back</button>
+    <button class="btn btn-primary" ng-click="defendersReadyCb()">Troops ready!</button>
+</div>

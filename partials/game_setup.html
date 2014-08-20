@@ -1,0 +1,50 @@
+<!-- GAME SETUP -->
+<div ng-show="phase == 'gameSetup'">
+    <center><h2>THE CONVICTED<br/>digital aid</h2></center><br/>
+
+    <form class="form-horizontal" role="form">
+        <h3>General settings</h3>
+        <div class="form-group">
+            <label for="inputPlayers" class="col-sm-2 control-label">Players</label>
+            <div class="col-sm-10">
+                <input type="number" id="inputPlayers" class="form-control" ng-model="$root.playersNum" placeholder="1,2,3 etc">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputRound" class="col-sm-2 control-label">Initial round</label>
+            <div class="col-sm-10">
+                <input type="number" id="inputRound" class="form-control" ng-model="$root.round" placeholder="1,2,3 etc">
+            </div>
+        </div>
+        <h3>Difficulty</h3>
+        <div class="form-group">
+            <label for="inputBeastsDifficulty" class="col-sm-2 control-label">Beasts difficulty</label>
+            <div class="col-sm-10">
+                <input type="number" id="inputBeastsDifficulty" class="form-control" ng-model="$root.invaderTypes['Beasts'].difficulty" placeholder="1,2,3 etc">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputBarbariansDifficulty" class="col-sm-2 control-label">Barbarians difficulty</label>
+            <div class="col-sm-10">
+                <input type="number" id="inputBarbariansDifficulty" class="form-control" ng-model="$root.invaderTypes['Barbarians'].difficulty" placeholder="1,2,3 etc">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputWolfmenDifficulty" class="col-sm-2 control-label">Wolfmen difficulty</label>
+            <div class="col-sm-10">
+                <input type="number" id="inputWolfmenDifficulty" class="form-control" ng-model="$root.invaderTypes['Wolfmen'].difficulty" placeholder="1,2,3 etc">
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputForestmenDifficulty" class="col-sm-2 control-label">Forestmen difficulty</label>
+            <div class="col-sm-10">
+                <input type="number" id="inputForestmenDifficulty" class="form-control" ng-model="$root.invaderTypes['Forestmen'].difficulty" placeholder="1,2,3 etc">
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default" ng-click="$root.phase = 'preparations'">Start</button>
+            </div>
+        </div>
+    </form>
+</div>

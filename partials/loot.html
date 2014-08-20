@@ -1,0 +1,31 @@
+<div ng-if="phase == 'looting'" ng-controller="LootController">
+    <h2>III. SIEGE - LOOT</h2>
+
+    <h1 class="primary-message">{{battleResult}}</h1>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p ng-show="invaderType.noLootWhenDifficultyAt3 && invaderType.difficulty >= 3">
+                {{invaderType.name}} did not abandon any loot.
+            </p>
+
+            <span ng-show="!invaderType.noLootWhenDifficultyAt3 || invaderType.difficulty < 3">
+                <p>Defenders leave their fortifications in search for any loot that the invaders might have abandoned.</p>
+                <p ng-repeat="playerLoot in playersLoot"> {{['First', 'Second', 'Third', 'Fourth'][$index]}} player found <resources resources="playerLoot"></resources></p>
+                <p>Players take the resources they found and put them in their personal stashes near the board.</p>
+            </span>
+        </div>
+    </div>
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <p><img src="images/enemies.png" width="32px"> Any remaining invader units run away, remove them from the board.</p>
+            <p><img src="images/invadersdeck.png" width="32px"> If you are using the Invader’s Cards deck, shuffle it and place it on an appropriate field on the board “face” down.</p>
+            <p style="margin: 0"><img src="images/morale.png" width="32px"> If you are using the morale marker, remove it from the board.</p>
+        </div>
+    </div>
+    <br/>
+
+    <button class="btn btn-default" ng-click="$root.phase = 'battle'">< back</button>
+    <button class="btn btn-primary" ng-click="$root.round = round + 1; $root.phase = 'preparations'">Next round</button>
+</div>

@@ -1,0 +1,43 @@
+
+<!-- SIEGE SETUP OPTIONAL PART -->
+<div ng-show="phase == 'enemyGathersInformation'">
+
+    <div class="flow-buttons">
+        <button class="btn btn-default" ng-click="$root.phase = 'invaderScouted'">< back</button>
+        <button class="btn btn-primary" ng-click="enemyGatheredInformationCb()">Done</button>
+    </div>
+
+    <h2>III. SIEGE - STATUS</h2>
+
+
+
+    <div ng-show="invaderType.arriveBehaviour.avoidsMoats">
+        <div style="position:relative">
+            <img style="text-align: center; width: 100%" src="images/map.png" />
+            <div style="position: absolute; top: 1%; left: 1%; color: #fff"><h1 style="margin-top: 10px; margin-bottom: 0px;">{{invaderType.name}} are scouting your positions!</h1>Select the walls with <b>moats</b>:</div>
+
+            <button style="top: 15%;    left: 50%;  width: 300px; height: 50px;  margin-left: -150px; margin-top: -25px;" type="button" class="map-btn btn btn-lg btn-default" ng-model="defences['N'].moat" btn-checkbox>N</button>
+            <button style="bottom: 12%; left: 50%;  width: 60%;   height: 50px;  margin-left: -30%;   margin-top: -25px;" type="button" class="map-btn btn btn-lg btn-default" ng-model="defences['S'].moat" btn-checkbox>S</button>
+            <button style="top: 50%;    left: 15%;  width: 12%;   height: 300px; margin-left: -6%;    margin-top: -150px;" type="button" class="map-btn btn btn-lg btn-default" ng-model="defences['W'].moat" btn-checkbox>W</button>
+            <button style="top: 50%;    right: 15%; width: 12%;   height: 300px; margin-right: -6%;   margin-top: -150px;" type="button" class="map-btn btn btn-lg btn-default" ng-model="defences['E'].moat" btn-checkbox>E</button>
+        </div>
+    </div>
+
+    <div ng-show="invaderType.arriveBehaviour.goesForWeakestWall">
+        <div style="position:relative; margin-bottom: 1em;">
+            <img style="text-align: center; width: 100%" src="images/map.png" />
+            <div style="position: absolute; top: 1%; left: 1%; color: #fff"><h1 style="margin-top: 10px; margin-bottom: 0px;">{{invaderType.name}} are scouting your positions!</h1>Select the weakest wall sections:</div>
+            <div style="position: absolute; bottom: 1%; left: 1%; color: #fff">Wall strength = (Wall EN + ST of all units on it) * (130% if fully covered by moat, 110% if fully covered by anything else, 100% otherwise) </div>
+            <button style="top: 23%;    left: 50%;  width: 30%; height: 70px;  margin-left: -15%; margin-top: -35px;" type="button" class="map-btn btn btn-lg btn-default" ng-model="defences['N'].weak" btn-checkbox>N</button>
+            <button style="bottom: 26%; left: 49%;  width: 42%;   height: 80px;  margin-left: -21%;   margin-top: -40px;" type="button" class="map-btn btn btn-lg btn-default" ng-model="defences['S'].weak" btn-checkbox>S</button>
+            <button style="top: 43%;    left: 27%;  width: 10%;   height: 180px; margin-left: -5%;    margin-top: -90px;" type="button" class="map-btn btn btn-lg btn-default" ng-model="defences['W'].weak" btn-checkbox>W</button>
+            <button style="top: 43%;    right: 27%;  width: 10%;   height: 180px; margin-right: -5%;    margin-top: -90px;" type="button" class="map-btn btn btn-lg btn-default" ng-model="defences['E'].weak" btn-checkbox>E</button>
+        </div>
+
+        <p></p>
+    </div>
+
+    <br/>
+    <br/>
+    <br/>
+</div>

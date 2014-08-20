@@ -2,7 +2,7 @@
     <a ng-click="showUnitInfo(unitId)" href="">
         {{unitCount}}
         x
-        <img src="{{invaderType.unitTypes[unitId].icon}}" width="{{invaderType.unitTypes[unitId].size}}px"/>
+        <img ng-src="{{invaderType.unitTypes[unitId].icon}}" width="{{invaderType.unitTypes[unitId].size}}px"/>
         {{invaderType.unitTypes[unitId].name}}
     </a>
     <br/>

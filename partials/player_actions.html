@@ -1,0 +1,56 @@
+<div ng-show="phase == 'preparations'">
+    <h2>I. SETUP</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+        <p>
+            <img src="images/timemarker.png" width="32px">
+            <span ng-show="round === 1">Place the Time Marker on </span>
+            <span ng-show="round != 1">Move the Time Marker one space forwards to</span>
+            the <strong>{{round}}</strong> space.
+        </p>
+
+        <!-- TODO: Remaining parts of the setup -->
+
+        <p ng-show="round === 1"><img src="images/fortifications.png" width="32px"> Place the Barracks level 1 and Keep level 1 buildings next to the board.</p>
+        <p ng-show="round === 1"><img src="images/fortifications.png" width="32px"> Each player chooses his hero.</p>
+        <p ng-show="round === 1"><img src="images/fortifications.png" width="32px"> Each player receives <strong>{{ {1: 8, 2: 4, 3:3, 4:2}[playersNum] }}</strong> wood and <strong>{{ {1: 8, 2: 4, 3:3, 4:2}[playersNum] }}</strong> Spearmen.</p>
+
+        <p>
+            <img src="images/actionmarker.png" width="32px">
+            <span ng-show="playersNum === 1">Player receives <strong>{{actionsPerPlayer}}</strong> action tokens</span>
+            <span ng-show="playersNum !== 1">Each player receives <strong>{{actionsPerPlayer}}</strong> action tokens <span ng-show="additionalFirstPlayerActions > 0">, the first player receives additional <strong>{{additionalFirstPlayerActions}}</strong> actions</span></span>
+        </p>
+
+        <span ng-show="round != 1">
+            <p><img src="images/protection.png" width="32px"> Place the used Spell and Blessing markers back on the Mage Tower and Chapel Cards.</p>
+        </span>
+
+        <span ng-show="playersNum !== 1">
+            <p><img src="images/firstplayertoken.png" width="32px"> First Player token is placed in front of <span ng-show="round === 1">a random player.</span><span ng-show="round !== 1">the next player in the clockwise direction.</span></p>
+            <p><img src="images/fortifications.png" width="32px"> Starting with the First Player, each player chooses {{playersNum == 2 ? '2 Walls' : '1 Wall' }} and {{playersNum === 2 ? '2 adjoining Towers' : '1 adjoining Tower' }} to defend. The First Player defends {{playersNum == 3 ? 'the 4th Wall section, the 4th Tower and' : '' }} the Keep.</p>
+        </span>
+
+        </div>
+    </div>
+    <h2>II. EXECUTING ACTIONS</h2>
+    <div class="panel panel-default">
+        <div class="panel-body">
+            <img src="images/actionmarker.png" width="32px"> Each player executes his actions, available actions:
+            <ul style="margin-left: 2em">
+                <li>Build or upgrade a <strong>fortication</strong>, <strong>building</strong>, <strong>moat</strong>, <strong>ditch</strong> or <strong>sharpened stakes</strong></li>
+                <li>Research new technology</li>
+                <li>Receive resources</li>
+                <li>Train a military unit</li>
+                <li>Build a siege machine</li>
+            </ul>
+            <img src="images/fortifications.png" width="32px"> Activities that do not require an action:
+            <ul style="margin-left: 2em">
+                <li>Repair a fortification.</li>
+                <li>Each player may give one resource type per round with another player of his choice.</li>
+            </ul>
+        </div>
+    </div>
+
+    <center><button class="btn btn-default btn-lg" ng-click="$root.phase = 'invaderScouted'; sendScouts()">Scout the incoming invading army</button></center>
+</div>
